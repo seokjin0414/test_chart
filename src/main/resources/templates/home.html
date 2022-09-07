@@ -1,21 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
-<p>test spring boot</p>
-<p>chart</p>
-<p>가격</p>
-<select>
-    <option value="usd" selected="selected">USD</option>
-    <option value="krw">KRW</option>
-    <option value="jpy">JPY</option>
-</select>
-<p>환율 USD, KRW, JPY     30분 간격 insert</p>
-<p>coin BTC, ETH, BCH, LTC, SOL     30분 간격 insert, 디폴트usd  </p>
 
+<p th:text="${hello}">message</p>
 
 </body>
+
 </html>

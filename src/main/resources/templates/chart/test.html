@@ -1,10 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
 </head>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+
+
+<script th:inline="javascript">
+
+</script>
+
+
 <body>
 
+<select>
+    <option value="usd" selected="selected">USD</option>
+    <option value="krw">KRW</option>
+    <option value="jpy">JPY</option>
+</select>
+<p>환율 USD, KRW, JPY 30분 간격 insert</p>
+<p>coin BTC, ETH, BCH, LTC, SOL 30분 간격 insert, 디폴트usd </p>
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new Chart(document.getElementById('myChart'), v_config);
+    });
+
+    let labels = [];
+    let amounts = [];
+    let members = [];
+
+    for(let pm of paymentMonths){
+        labels.push(pm.paymentMonth);
+        amounts.push(pm.sumAmount);
+        members.push(pm.cntMember);
+    }
+
+    const v_data = {
+        labels: labels,
+        datasets: [
+            {
+                label: '수강료',
+                data: amounts,
+                borderColor: '#36a2eb',
+                backgroundColor: '#36a2eb',
+                yAxisID: 'y'
+            },
+            {
+                label: '학생수',
+                data: members,
+                borderColor: '#ffb0c1',
+                backgroundColor: '#ffb0c1',
+                yAxisID: 'y1',
+                type: 'bar'
+            }
+        ]
+    };
+
+    const v_config = {
+        type: 'line',
+        data: v_data,
+        options: {
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    suggestedMin: 0,
+                    suggestedMax: 1000000,
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    suggestedMin: 0,
+                    suggestedMax: 20,
+                    // grid line settings
+                    grid: {
+                        // only want the grid lines for one axis to show up
+                        drawOnChartArea: false,
+                    }
+                }
+            }
+        }
+    };
+
+
+
+
+
+
+</script>
+
 </html>
