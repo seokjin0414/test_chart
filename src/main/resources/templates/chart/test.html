@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
 </head>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script async src="/js/ajax-item-admin.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
-
-
-<script th:inline="javascript">
-
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <body>
 
@@ -33,79 +26,37 @@
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        new Chart(document.getElementById('myChart'), v_config);
-    });
+    const labels = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+    ];
 
-    let labels = [];
-    let amounts = [];
-    let members = [];
-
-    for(let pm of paymentMonths){
-        labels.push(pm.paymentMonth);
-        amounts.push(pm.sumAmount);
-        members.push(pm.cntMember);
-    }
-
-    const v_data = {
+    const data = {
         labels: labels,
-        datasets: [
-            {
-                label: '수강료',
-                data: amounts,
-                borderColor: '#36a2eb',
-                backgroundColor: '#36a2eb',
-                yAxisID: 'y'
-            },
-            {
-                label: '학생수',
-                data: members,
-                borderColor: '#ffb0c1',
-                backgroundColor: '#ffb0c1',
-                yAxisID: 'y1',
-                type: 'bar'
-            }
-        ]
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+        }]
     };
 
-    const v_config = {
+    const config = {
         type: 'line',
-        data: v_data,
-        options: {
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    suggestedMin: 0,
-                    suggestedMax: 1000000,
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    suggestedMin: 0,
-                    suggestedMax: 20,
-                    // grid line settings
-                    grid: {
-                        // only want the grid lines for one axis to show up
-                        drawOnChartArea: false,
-                    }
-                }
-            }
-        }
+        data: data,
+        options: {}
     };
+</script>
 
-
-
-
-
-
+<script>
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
 </script>
 
 </html>
