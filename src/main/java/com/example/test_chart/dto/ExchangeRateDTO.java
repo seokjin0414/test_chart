@@ -7,7 +7,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class exchangeRateDTO {
+public class ExchangeRateDTO {
     private Long exchangeRateId;
     private Long usd;
     private Long krw;

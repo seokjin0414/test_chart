@@ -1,19 +1,16 @@
 package com.example.test_chart.service;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Response;
-
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class chartService {
+public class ChartService {
 
     public void getCoinValue() {
 

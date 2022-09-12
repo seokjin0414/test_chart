@@ -7,7 +7,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class coinVlaueDTO {
+public class CoinVlaueDTO {
     private Long coinVlaueId;
     private String coinKind;
     private Long coinValue;
