@@ -44,7 +44,7 @@ try {
     OkHttpClient client = new OkHttpClient();
 
     Request request = new Request.Builder()
-            .url("https://api.upbit.com/v1/trades/ticks?market=USDT-BTC&count=1")
+            .url("https://api.upbit.com/v1/ticker?markets=USDT-BTC")
             .get()
             .addHeader("Accept", "application/json")
             .build();
