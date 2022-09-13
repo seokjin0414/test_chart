@@ -8,11 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
@@ -40,26 +40,35 @@ public class ChartController {
                 .sign(algorithm);
 
         String authenticationToken = "Bearer " + jwtToken;
-try {
-    OkHttpClient client = new OkHttpClient();
-
-    Request request = new Request.Builder()
-            .url("https://api.upbit.com/v1/ticker?markets=USDT-BTC")
-            .get()
-            .addHeader("Accept", "application/json")
-            .build();
-
-    Response response = client.newCall(request).execute();
-    System.out.println(response);
-
-} catch (IOException e) {
-    e.printStackTrace();
-}
+        try{
+            //인스턴스를 생성합니다.
+            OkHttpClient client = new OkHttpClient();
+            //get방식은 URL로 parameter를 전송합니다.
+            String strURL = "https://api.upbit.com/v1/candles/minutes/30?market=USDT-BTC&count=1";
+            //GET요청을 위한 build 작업을 합니다.
+            Request.Builder builder = new Request.Builder().url(strURL).get();
+            //json을 주고받는 경우, 헤더에 추가합니다.
+            builder.addHeader("Content-type", "application/json");
+            //request 객체를 생성합니다.
+            Request request = builder.build();
+            //request를 요청하고 그 결과를 response 객체로 응답을 받습니다.
+            Response response = client.newCall(request).execute();
+            //응답처리
+            if(response.isSuccessful()){
+                ResponseBody body = response.body();
+                System.out.println("[responseBody]:" + body.string());
+                body.close();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
 
         return "chart/test";
     }
+
+
 
 
 }

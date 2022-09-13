@@ -37,6 +37,9 @@ dependencies {
 
     implementation 'com.auth0:java-jwt:4.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okio:okio:3.2.0'
+
+
 
 
 }
