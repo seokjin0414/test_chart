@@ -1,4 +1,4 @@
-package com.example.test_chart.dto;
+package com.example.test_chart.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class GetCoinValue30Min {
+public class CoinValue30Min {
 
     // 마켓명
     private String market;

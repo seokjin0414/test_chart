@@ -1,7 +1,6 @@
 package com.example.test_chart.service;
 
 
-import com.example.test_chart.dto.GetCoinValue30Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,7 +10,6 @@ import okhttp3.Response;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 
 @Slf4j
