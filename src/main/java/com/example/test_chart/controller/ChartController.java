@@ -10,19 +10,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.core5.http.HttpRequest;
-import org.apache.hc.core5.http.HttpResponse;
-import org.omg.CORBA.portable.ResponseHandler;
+
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 
 @Slf4j
@@ -38,7 +33,7 @@ public class ChartController {
     @GetMapping("/test1")
     public String getCoin() {
 
-
+//
 //        String accessKey = "발급받은 Access key";
 //        String secretKey = "발급받은 Secret key";
 //
@@ -49,6 +44,33 @@ public class ChartController {
 //                .withClaim("nonce", UUID.randomUUID().toString())
 //                .sign(algorithm);
 //        String authenticationToken = "Bearer " + jwtToken;
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://api.upbit.com/v1/candles/minutes/30?market=USDT-BTC&count=1")
+                    .method("GET", null)
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String userString = response.body().string();
+                JSONArray userJson = new JSONArray(userString);
+                JSONObject object  = userJson.getJSONObject(0);
+                System.out.println(object);
+
+                String a1= object.getString("market");
+                String a2 = object.getString("candle_date_time_kst");
+                String a3 = object.getString("trade_price");
+                System.out.println(a1 + a2 + a3);
+                CoinValue30Min a = new CoinValue30Min();
+
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         try {
