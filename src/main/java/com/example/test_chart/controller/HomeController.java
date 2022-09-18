@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/")
-    public String goHome(Model model) {
-
-        model.addAttribute("hello", "서버에서 보내준 값입니다");
-        return "home";
-
+    public String chartGo() {
+        return "chart/test";
     }
 
 }

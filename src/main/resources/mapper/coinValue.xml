@@ -4,4 +4,16 @@
 
 <mapper namespace="com.example.test_chart.repository.CoinValueRepository">
 
+    <select id="selectCoinValueList" parameterType="CoinValue" resultType="CoinValue">
+        SELECT *
+        FROM coinValue;
+    </select>
+
+    <insert id="insertCoinValue" parameterType="CoinValue">
+        INSERT INTO coin_value
+        (market, trade_price)
+        VALUES (#{market}, #{tradePrice});
+    </insert>
+
+
 </mapper>

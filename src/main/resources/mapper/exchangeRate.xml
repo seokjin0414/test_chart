@@ -4,4 +4,18 @@
 
 <mapper namespace="com.example.test_chart.repository.ExchangeRateRepository">
 
+    <select id="selectExchangeRateRecent" parameterType="ExchangeRate" resultType="ExchangeRate">
+        SELECT usd, krw, jpy , exchange_rate_regdate
+        FROM exchange_rate
+        ORDER BY exchange_rate_regdate DESC
+        LIMIT 1;
+    </select>
+
+    <insert id="insertExchangeRate" parameterType="ExchangeRate">
+        INSERT INTO exchange_rate
+        (krw, jpy)
+        VALUES(#{krw}, #{jpy});
+    </insert>
+
+
 </mapper>
