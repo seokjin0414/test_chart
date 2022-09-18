@@ -6,7 +6,7 @@
 
     <select id="selectCoinValueList" parameterType="CoinValue" resultType="CoinValue">
         SELECT *
-        FROM coinValue;
+        FROM coin_value;
     </select>
 
     <insert id="insertCoinValue" parameterType="CoinValue">

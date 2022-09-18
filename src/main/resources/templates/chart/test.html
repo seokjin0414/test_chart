@@ -9,16 +9,46 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
 <body>
-
-<select>
-    <option value="usd" selected="selected">USD</option>
-    <option value="krw">KRW</option>
-    <option value="jpy">JPY</option>
-</select>
-
-<div>
-    <canvas id="myChart"></canvas>
+<div class="container bg-light">
+    <div><br><br></div>
+    <div class="row">
+        <div class="contents form-group col-9">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="contents form-group col-2">
+            <label for="kind" class="form-label">통화 종류 선택 : </label>
+            <select id="kind">
+                <option value="usd" selected="selected">USD</option>
+                <option value="krw">KRW</option>
+                <option value="jpy">JPY</option>
+            </select>
+            <div><br></div>
+            <h3>환율</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">USD</th>
+                    <th scope="col">KRW</th>
+                    <th scope="col">JPY</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${exchangeRate.getUsd()}">usd</td>
+                    <td th:text="${exchangeRate.getKrw()}">krw</td>
+                    <td th:text="${exchangeRate.getJpy()}">jpy</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 </body>
@@ -31,23 +61,56 @@
         'April',
         'May',
         'June',
+        'July'
     ];
 
     const data = {
         labels: labels,
         datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
+            label: 'BTC',
+            backgroundColor: 'rgb(255,0,54)',
+            borderColor: 'rgb(255,0,54)',
+            data: [10, 8, 5, 2, 20, 30, 90],
+        }, {
+            label: 'ETH',
+            backgroundColor: 'rgb(30,40,209)',
+            borderColor: 'rgb(30,40,209)',
+            data: [70, 1, 20, 3, 20, 40, 4],
+        }, {
+            label: 'BCH',
+            backgroundColor: 'rgb(255,255,99)',
+            borderColor: 'rgb(255,255,99)',
+            data: [0, 3, 6, 15, 9, 6, 23],
+        }, {
+            label: 'DOGE',
+            backgroundColor: 'rgb(49,220,42)',
+            borderColor: 'rgb(49,220,42)',
+            data: [60, 50, 60, 30, 10, 30, 45],
+        }, {
+            label: 'XRP',
+            backgroundColor: 'rgb(235,104,35)',
+            borderColor: 'rgb(235,104,35)',
+            data: [3, 10, 5, 32, 7, 5, 29],
         }]
     };
 
     const config = {
         type: 'line',
         data: data,
-        options: {}
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Coin Chart'
+                }
+            }
+        },
     };
+
 </script>
 
 <script>
