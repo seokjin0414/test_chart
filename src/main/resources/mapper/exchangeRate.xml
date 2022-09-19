@@ -5,7 +5,7 @@
 <mapper namespace="com.example.test_chart.repository.ExchangeRateRepository">
 
     <select id="selectExchangeRateRecent" parameterType="ExchangeRate" resultType="ExchangeRate">
-        SELECT *
+        SELECT exchange_rate_id, usd, jpy, krw, date_format(exchange_rate_regdate, '%Y-%m-%d') AS exchangeRateRegdate
         FROM exchange_rate
         ORDER BY exchange_rate_regdate DESC
         LIMIT 1;

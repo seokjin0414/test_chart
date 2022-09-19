@@ -5,7 +5,7 @@
 <mapper namespace="com.example.test_chart.repository.CoinValueRepository">
 
     <select id="selectCoinValueList" parameterType="CoinValue" resultType="CoinValue">
-        SELECT *
+        SELECT coin_id, market, trade_price, date_format(coin_value_regdate, '%Y-%m-%d %H:%i') AS coinValueRegdate
         FROM coin_value;
     </select>
 

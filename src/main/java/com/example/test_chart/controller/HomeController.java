@@ -19,7 +19,11 @@ public class HomeController {
     public String chartGo(Model model) {
         ExchangeRate vo = new ExchangeRate();
         ExchangeRate exchangeRate = exchangeRateService.selectExchangeRateRecent(vo);
+
+        if (exchangeRate != null) {
+
         model.addAttribute("exchangeRate", exchangeRate);
+        }
 
         return "chart/test";
     }

@@ -23,14 +23,14 @@
             <canvas id="myChart"></canvas>
         </div>
         <div class="contents form-group col-2">
-            <label for="kind" class="form-label">통화 종류 선택 : </label>
+            <label for="kind" class="form-label">통화 선택 : </label>
             <select id="kind">
                 <option value="usd" selected="selected">USD</option>
                 <option value="krw">KRW</option>
                 <option value="jpy">JPY</option>
             </select>
             <div><br></div>
-            <h3>환율</h3>
+            <h3 th:text="'환율('+${exchangeRate.getExchangeRateRegdate()}+' 고시환율)'"></h3>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -54,7 +54,7 @@
 </body>
 
 <script>
-    const labels = [
+    var labels = [
         'January',
         'February',
         'March',
@@ -64,7 +64,7 @@
         'July'
     ];
 
-    const data = {
+    var data = {
         labels: labels,
         datasets: [{
             label: 'BTC',
@@ -94,7 +94,7 @@
         }]
     };
 
-    const config = {
+    const lender = {
         type: 'line',
         data: data,
         options: {
@@ -111,13 +111,11 @@
         },
     };
 
-</script>
-
-<script>
-    const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
+    const lenderChart = new Chart(
+        $('#myChart'),
+        lender
     );
+
 </script>
 
 </html>
