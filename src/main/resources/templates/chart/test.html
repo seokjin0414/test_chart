@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
 </head>
-<script async src="/js/ajax-item-admin.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -23,14 +23,14 @@
             <canvas id="myChart"></canvas>
         </div>
         <div class="contents form-group col-2">
-            <label for="kind" class="form-label">통화 선택 : </label>
-            <select id="kind">
+            <label for="rate" class="form-label">통화 선택 : </label>
+            <select id="rate">
                 <option value="usd" selected="selected">USD</option>
                 <option value="krw">KRW</option>
                 <option value="jpy">JPY</option>
             </select>
             <div><br></div>
-            <h3 th:text="'환율('+${exchangeRate.getExchangeRateRegdate()}+' 고시환율)'"></h3>
+            <h5 th:text="'환율('+${exchangeRate.getExchangeRateRegdate()}+' 고시환율)'"></h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -53,68 +53,131 @@
 
 </body>
 
-<script>
-    var labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July'
-    ];
+<script th:inline="javascript">
+    var dataBTC = [];
+    var dataETH = [];
+    var dataBCH = [];
+    var dataDOGE = [];
+    var dataXRP = [];
+    var labels = [];
+    var rate = 1;
 
-    var data = {
-        labels: labels,
-        datasets: [{
-            label: 'BTC',
-            backgroundColor: 'rgb(255,0,54)',
-            borderColor: 'rgb(255,0,54)',
-            data: [10, 8, 5, 2, 20, 30, 90],
-        }, {
-            label: 'ETH',
-            backgroundColor: 'rgb(30,40,209)',
-            borderColor: 'rgb(30,40,209)',
-            data: [70, 1, 20, 3, 20, 40, 4],
-        }, {
-            label: 'BCH',
-            backgroundColor: 'rgb(255,255,99)',
-            borderColor: 'rgb(255,255,99)',
-            data: [0, 3, 6, 15, 9, 6, 23],
-        }, {
-            label: 'DOGE',
-            backgroundColor: 'rgb(49,220,42)',
-            borderColor: 'rgb(49,220,42)',
-            data: [60, 50, 60, 30, 10, 30, 45],
-        }, {
-            label: 'XRP',
-            backgroundColor: 'rgb(235,104,35)',
-            borderColor: 'rgb(235,104,35)',
-            data: [3, 10, 5, 32, 7, 5, 29],
-        }]
-    };
+    $('#rate').change(function() {
 
-    const lender = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Coin Chart'
+        if($('#rate').values = "krw") {
+            rate = [[${exchangeRate.getKrw()}]];
+        }
+
+        if($('#rate').valueOf("jpy")) {
+            rate = [[${exchangeRate.getJpy()}]];
+        }
+
+        alert(rate);
+        gridChart();
+    });
+
+    $(document).ready(function(){
+        gridChart();
+    });
+
+    function gridChart(data){
+        $.ajax({
+            url:"api/chart/selectCoinValue",
+            data: data,
+            dataType: "json",
+            type: "GET",
+            async:false,
+            success:function(data) {
+                let cnt = data.length/5;
+
+                for (let i=0; i<cnt; i++) {
+                    labels.push(data[i].coinValueRegdate);
                 }
-            }
-        },
-    };
 
-    const lenderChart = new Chart(
-        $('#myChart'),
-        lender
-    );
+                for (let j=0; j<cnt; j++) {
+                    dataXRP.push(data[j].tradePrice * rate);
+                }
+
+                for (let j=cnt; j<cnt*2; j++) {
+                    dataETH.push(data[j].tradePrice * rate);
+                }
+
+                for (let j=cnt*2; j<cnt*3; j++) {
+                    dataDOGE.push(data[j].tradePrice * rate);
+                }
+
+                for (let j=cnt*3; j<cnt*4; j++) {
+                    dataBTC.push(data[j].tradePrice * rate);
+                }
+
+                for (let j=cnt*4; j<cnt*5; j++) {
+                    dataBCH.push(data[j].tradePrice * rate);
+                }
+
+                console.log(dataXRP);
+                console.log(dataETH);
+                console.log(dataDOGE);
+                console.log(dataBTC);
+                console.log(dataBCH);
+
+                var dataChart = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'BTC',
+                        backgroundColor: 'rgb(255,0,54)',
+                        borderColor: 'rgb(255,0,54)',
+                        data: dataBTC,
+                    }, {
+                        label: 'ETH',
+                        backgroundColor: 'rgb(30,40,209)',
+                        borderColor: 'rgb(30,40,209)',
+                        data: dataETH,
+                    }, {
+                        label: 'BCH',
+                        backgroundColor: 'rgb(255,255,99)',
+                        borderColor: 'rgb(255,255,99)',
+                        data: dataBCH,
+                    }, {
+                        label: 'DOGE',
+                        backgroundColor: 'rgb(49,220,42)',
+                        borderColor: 'rgb(49,220,42)',
+                        data: dataDOGE,
+                    }, {
+                        label: 'XRP',
+                        backgroundColor: 'rgb(235,104,35)',
+                        borderColor: 'rgb(235,104,35)',
+                        data: [3, 10, 5, 32, 7, 5, 29],
+                    }]
+                };
+
+                const lender = {
+                    type: 'line',
+                    data: dataChart,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Coin Chart'
+                            }
+                        }
+                    },
+                };
+
+                const lenderChart = new Chart(
+                    $('#myChart'),
+                    lender
+                );
+
+            }
+        });
+    }
+
+
+
 
 </script>
 

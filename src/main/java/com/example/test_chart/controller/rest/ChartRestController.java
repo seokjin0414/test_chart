@@ -5,6 +5,7 @@ import com.example.test_chart.service.ApiService;
 import com.example.test_chart.service.CoinValueService;
 import com.example.test_chart.service.ExchangeRateService;
 import com.example.test_chart.vo.CoinValue;
+import com.example.test_chart.vo.ExchangeRate;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,16 +36,26 @@ public class ChartRestController extends BaseRestController {
     @Autowired
     ExchangeRateService exchangeRateService;
 
+    @GetMapping(value = "selectCoinValue")
+    public List<CoinValue> selectCoinValue(CoinValue vo) {
+        return coinValueService.selectWaitingTransferList(vo);
+    }
+
     @Scheduled(cron = "0 0/30 * * * *")
     @PostMapping(value = "insertCoinValue")
     public  ResponseEntity<?> insertCoinValue() {
         List<CoinValue> list = apiService.getCoinValueApi();
+
         for (CoinValue vo : list) {
             int update = coinValueService.insertCoinValue(vo);
-
         }
 
         return success("OK");
+    }
+
+    @GetMapping(value = "selectExchangeRate")
+    public ExchangeRate selectExchangeRate(ExchangeRate vo) {
+        return exchangeRateService.selectExchangeRateRecent(vo);
     }
 
     @Scheduled(cron = "0 40 8 * * 1-5")
@@ -53,5 +65,6 @@ public class ChartRestController extends BaseRestController {
 
         return success("ok");
     }
+
 
 }
