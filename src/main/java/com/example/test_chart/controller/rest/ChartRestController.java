@@ -36,11 +36,6 @@ public class ChartRestController extends BaseRestController {
     @Autowired
     ExchangeRateService exchangeRateService;
 
-    @GetMapping(value = "selectCoinValue")
-    public List<CoinValue> selectCoinValue(CoinValue vo) {
-        return coinValueService.selectWaitingTransferList(vo);
-    }
-
     @Scheduled(cron = "0 0/30 * * * *")
     @PostMapping(value = "insertCoinValue")
     public  ResponseEntity<?> insertCoinValue() {
@@ -53,18 +48,25 @@ public class ChartRestController extends BaseRestController {
         return success("OK");
     }
 
+    @Scheduled(cron = "0 40 8 * * 1-5")
+    @PostMapping(value = "insertExchangeRate")
+    public ResponseEntity<?> insertExchangeRate() {
+        int update = exchangeRateService.insertExchangeRate(apiService.getExchangeRateApi());
+        return success("ok");
+    }
+
+    @GetMapping(value = "selectCoinValue")
+    public List<CoinValue> selectCoinValue(CoinValue vo) {
+        return coinValueService.selectWaitingTransferList(vo);
+    }
+
     @GetMapping(value = "selectExchangeRate")
     public ExchangeRate selectExchangeRate(ExchangeRate vo) {
         return exchangeRateService.selectExchangeRateRecent(vo);
     }
 
-    @Scheduled(cron = "0 40 8 * * 1-5")
-    @PostMapping(value = "insertExchangeRate")
-    public ResponseEntity<?> insertExchangeRate() {
-        int update = exchangeRateService.insertExchangeRate(apiService.getExchangeRateApi());
-
-        return success("ok");
+    @GetMapping(value = "getCoinValueOfChart")
+    List<List<String>> getCoinValueOfChart(CoinValue vo) {
+        return coinValueService.getCoinValueOfChart(vo);
     }
-
-
 }

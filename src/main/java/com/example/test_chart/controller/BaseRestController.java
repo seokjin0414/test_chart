@@ -15,12 +15,6 @@ import java.time.format.DateTimeFormatter;
 public class BaseRestController {
     private final Logger L = LoggerFactory.getLogger(this.getClass());
 
-
-    /**
-     * 성공
-     * @param data
-     * @return
-     */
     protected ResponseEntity<?> success(Object data) {
         ResultVo restResult = new ResultVo();
         restResult.setCode("200");
@@ -29,10 +23,5 @@ public class BaseRestController {
         restResult.setDatetime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return new ResponseEntity<>(restResult, HttpStatus.OK);
     }
-
-
-
-
-
 
 }
