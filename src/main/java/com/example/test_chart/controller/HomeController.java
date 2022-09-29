@@ -23,15 +23,7 @@ public class HomeController {
     ExchangeRateService exchangeRateService;
 
     @GetMapping("/")
-    public String chartGo(Model model) {
-        ExchangeRate exchangeRate = new ExchangeRate();
-        exchangeRate = exchangeRateService.selectExchangeRateRecent(exchangeRate);
-
-        if (exchangeRate != null) {
-
-        model.addAttribute("exchangeRate", exchangeRate);
-        }
-
+    public String chartGo() {
         return "chart/test";
     }
 
