@@ -54,15 +54,22 @@
 <script>
     var pageAction = function () {
 
-        var rate = 222;
+        var rate = 1;
+
+        var dataBTC = [];
+        var dataETH = [];
+        var dataBCH = [];
+        var dataDOGE = [];
+        var dataXRP = [];
+        var labels = [];
 
         var init = function () {
             selectPaymentReqInfo();
             eventBind();
-            gridChart();
+            gridChart2();
         }
 
-        function eventBind() {
+        function eventBind(data) {
 
             $('#rateOp').change(function () {
                 switch ($('#rateOp').val()) {
@@ -76,7 +83,15 @@
                         rate = $('#jpyV').text();
                         break;
                 }
-                alert(rate);
+
+                casesChart.destroy();
+                dataBTC = [];
+                dataETH = [];
+                dataBCH = [];
+                dataDOGE = [];
+                dataXRP = [];
+                labels = [];
+                gridChart2(data);
             });
 
         }
@@ -97,68 +112,150 @@
             });
         }
 
-        function gridChart(data) {
+        // function gridChart(data) {
+        //     $.ajax({
+        //         url: "api/chart/getCoinValueOfChart",
+        //         data: data,
+        //         dataType: "json",
+        //         type: "GET",
+        //         async: false,
+        //         success: function (data) {
+        //             var dataChart = {
+        //                 labels: data[0],
+        //                 datasets: [{
+        //                     label: 'BTC',
+        //                     backgroundColor: 'rgb(255,0,54)',
+        //                     borderColor: 'rgb(255,0,54)',
+        //                     data: data[1],
+        //                 }, {
+        //                     label: 'ETH',
+        //                     backgroundColor: 'rgb(30,40,209)',
+        //                     borderColor: 'rgb(30,40,209)',
+        //                     data: data[2],
+        //                 }, {
+        //                     label: 'BCH',
+        //                     backgroundColor: 'rgb(255,255,99)',
+        //                     borderColor: 'rgb(255,255,99)',
+        //                     data: data[3],
+        //                 }, {
+        //                     label: 'DOGE',
+        //                     backgroundColor: 'rgb(49,220,42)',
+        //                     borderColor: 'rgb(49,220,42)',
+        //                     data: data[4],
+        //                 }, {
+        //                     label: 'XRP',
+        //                     backgroundColor: 'rgb(235,104,35)',
+        //                     borderColor: 'rgb(235,104,35)',
+        //                     data: data[5],
+        //                 }]
+        //             };
+        //             const lender = {
+        //                 type: 'line',
+        //                 data: dataChart,
+        //                 options: {
+        //                     responsive: true,
+        //                     plugins: {
+        //                         legend: {
+        //                             position: 'top',
+        //                         },
+        //                         title: {
+        //                             display: true,
+        //                             text: 'Coin Chart'
+        //                         }
+        //                     }
+        //                 }
+        //             };
+        //             const lenderChart = new Chart($('#myChart'), lender);
+        //         }
+        //     });
+        // }
+
+        function gridChart2(data) {
             $.ajax({
-                url: "api/chart/getCoinValueOfChart",
+                url: "api/chart/selectCoinValue",
                 data: data,
                 dataType: "json",
                 type: "GET",
                 async: false,
                 success: function (data) {
-                    var dataChart = {
-                        labels: data[0],
-                        datasets: [{
-                            label: 'BTC',
-                            backgroundColor: 'rgb(255,0,54)',
-                            borderColor: 'rgb(255,0,54)',
-                            data: data[1],
-                        }, {
-                            label: 'ETH',
-                            backgroundColor: 'rgb(30,40,209)',
-                            borderColor: 'rgb(30,40,209)',
-                            data: data[2],
-                        }, {
-                            label: 'BCH',
-                            backgroundColor: 'rgb(255,255,99)',
-                            borderColor: 'rgb(255,255,99)',
-                            data: data[3],
-                        }, {
-                            label: 'DOGE',
-                            backgroundColor: 'rgb(49,220,42)',
-                            borderColor: 'rgb(49,220,42)',
-                            data: data[4],
-                        }, {
-                            label: 'XRP',
-                            backgroundColor: 'rgb(235,104,35)',
-                            borderColor: 'rgb(235,104,35)',
-                            data: data[5],
-                        }]
-                    };
-                    const lender = {
-                        type: 'line',
-                        data: dataChart,
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Coin Chart'
-                                }
-                            }
-                        }
-                    };
-                    const lenderChart = new Chart($('#myChart'), lender);
-                }
+                    var cnt = data.length / 5;
+                    for (let i = 0; i < cnt; i++) {
+                        labels.push(data[i].coinValueRegdate);
+                    }
 
+                    for (let j = 0; j < cnt; j++) {
+                        dataXRP.push(data[j].tradePrice * rate);
+                    }
+
+                    for (let j = cnt; j < cnt * 2; j++) {
+                        dataETH.push(data[j].tradePrice * rate);
+                    }
+
+                    for (let j = cnt * 2; j < cnt * 3; j++) {
+                        dataDOGE.push(data[j].tradePrice * rate);
+                    }
+
+                    for (let j = cnt * 3; j < cnt * 4; j++) {
+                        dataBTC.push(data[j].tradePrice * rate);
+                    }
+
+                    for (let j = cnt * 4; j < cnt * 5; j++) {
+                        dataBCH.push(data[j].tradePrice * rate);
+                    }
+                }
             });
+
+            casesChart = new Chart($('#myChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'BTC',
+                        backgroundColor: 'rgb(255,0,54)',
+                        borderColor: 'rgb(255,0,54)',
+                        data: dataBTC,
+                    }, {
+                        label: 'ETH',
+                        backgroundColor: 'rgb(30,40,209)',
+                        borderColor: 'rgb(30,40,209)',
+                        data: dataETH,
+                    }, {
+                        label: 'BCH',
+                        backgroundColor: 'rgb(255,255,99)',
+                        borderColor: 'rgb(255,255,99)',
+                        data: dataBCH,
+                    }, {
+                        label: 'DOGE',
+                        backgroundColor: 'rgb(49,220,42)',
+                        borderColor: 'rgb(49,220,42)',
+                        data: dataDOGE,
+                    }, {
+                        label: 'XRP',
+                        backgroundColor: 'rgb(235,104,35)',
+                        borderColor: 'rgb(235,104,35)',
+                        data: dataXRP,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Coin Chart'
+                        }
+                    }
+                }
+            });
+
         }
 
         return {
             init: init
         }
+
     }
 
     $(function () {
